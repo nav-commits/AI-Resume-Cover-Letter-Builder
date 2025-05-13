@@ -1,4 +1,4 @@
-# 🧠 AI Resume & Cover Letter Generator (Next.js + OpenAI/GROQ)
+# 🧠 AI Resume & Cover Letter Generator (Next.js + Langchain/GROQ)
 
 This is a simple full-stack web application built with **Next.js 13/14 App Router**, **TypeScript**, **React Hook Form**, **Zod**, and a backend API route. It allows users to input a job title, company, and job description and receive an **AI-generated resume and cover letter**.
 
