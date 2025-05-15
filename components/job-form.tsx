@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -28,8 +28,7 @@ const formSchema = z.object({
     message: "Company name must be at least 2 characters.",
   }),
   description: z.string().min(50, {
-    message:
-      "Job description must be at least 50 characters for better results.",
+    message: "Job description must be at least 50 characters.",
   }),
 });
 
@@ -42,8 +41,7 @@ export function JobForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [generatedContent, setGeneratedContent] = useState<GeneratedContent | null>(null);
   const { toast } = useToast();
-
-  const router = useRouter(); // Using useRouter for client-side navigation
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,20 +54,17 @@ export function JobForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    setGeneratedContent(null); // reset on each submit
+    setGeneratedContent(null);
 
     try {
-      const response = await fetch("http://localhost:3000/api/generate", {
+      // POST to generate + save, then get result from response directly
+      const response = await fetch("/api/generate", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to generate content.");
-      }
+      if (!response.ok) throw new Error("Failed to generate content.");
 
       const data = await response.json();
 
@@ -80,7 +75,7 @@ export function JobForm() {
 
       toast({
         title: "Success!",
-        description: "Content generated successfully.",
+        description: "Content generated and saved.",
       });
     } catch (error) {
       console.error("Error generating content", error);
@@ -111,7 +106,6 @@ export function JobForm() {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="company"
@@ -125,7 +119,6 @@ export function JobForm() {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="description"
@@ -148,7 +141,7 @@ export function JobForm() {
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Analyzing...
+                Generating...
               </>
             ) : (
               "Generate Content"
@@ -171,9 +164,8 @@ export function JobForm() {
         </div>
       )}
 
-      {/* Go Back to Homepage Button */}
       <div className="mt-6">
-        <Button onClick={() => router.push('/')}>Go Back to Homepage</Button>
+        <Button onClick={() => router.push("/")}>Go Back to Homepage</Button>
       </div>
     </>
   );
