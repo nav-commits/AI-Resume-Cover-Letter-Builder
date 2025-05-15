@@ -1,4 +1,3 @@
-![AIResume](https://github.com/user-attachments/assets/f206e64b-2c1f-4ac5-b558-bbfec2d1c68c)
 # 🧠 AI Resume & Cover Letter Generator (Next.js + Langchain/GROQ)
 
 This is a simple full-stack web application built with **Next.js 13/14 App Router**, **TypeScript**, **React Hook Form**, **Zod**, and a backend API route. It allows users to input a job title, company, and job description and receive an **AI-generated resume and cover letter**.
@@ -24,7 +23,7 @@ This is a simple full-stack web application built with **Next.js 13/14 App Route
 - GROQ API (via `/api/generate`)
 
 ---
-
+![AIResume](https://github.com/user-attachments/assets/f206e64b-2c1f-4ac5-b558-bbfec2d1c68c)
 ## 📄 Environment Variables
 
 Create a `.env.local` file in the root of your project and add the following:
